@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title PromoTracks
+    = favicon_link_tag image_path('icons/favicon-20.ico')
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body.theme-default
+    =render partial: 'layouts/superadmin/side_bar'
+    =render partial: 'layouts/superadmin/top_bar'
+    section.page-content
+      section.page-content-inner
+      -if flash.present?
+        =render 'layouts/flash_msg_template'
+      = yield
+    =render partial: 'layouts/superadmin/footer'

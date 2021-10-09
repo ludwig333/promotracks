@@ -1,0 +1,30 @@
+div
+.panel
+  .panel-heading
+    .row
+      .col-md-6
+        h3 Dashboard - #{@current_client.name}
+      .pull-right.col-md-3
+        .form-group
+          = select_tag :sort_by, options_for_select(Event::SORT_BY, selected_key = params[:sort]), {:title=>'Nothing Selected',class: 'form-control selectpicker', id: 'order-select'}
+      .pull-right style="margin-top: 4px;"
+        h6.filter Filter
+  .panel-body
+    #events_list
+      =render partial: 'admin/dashboard/events', :locals => {:events => @events}
+    .row
+      .col-md-12
+        small
+          /.text-inline.text-danger *
+          .text-inline Times are in the respective location's timezone
+    .row
+      .col-md-12
+        small
+          /.text-inline.text-danger #
+          .text-inline Times are in #{Time.zone.to_s} Timezone
+.padding-bottom-25
+
+
+
+
+

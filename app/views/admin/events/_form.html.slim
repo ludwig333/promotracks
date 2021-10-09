@@ -1,0 +1,98 @@
+div
+  = form_for [:admin, @event] do |f|
+    .panel
+      #breadcrumb-align
+        ul.list-unstyled.breadcrumb
+          li
+            a href='#{admin_events_path}'   Events
+          li
+            span #{@event.new_record? ? 'Create ' : 'Edit '} Event
+    .panel.panel-with-borders
+      .panel-heading
+        h4.panel-title #{@event.new_record? ? 'Create ' : 'Edit '} Event
+      .panel-body
+        =hidden_field_tag :selected
+        =f.hidden_field :promo_category
+        .form-group.row
+          .col-md-12
+            = f.label :name, 'Event Name'
+            sup.text-danger *
+            = f.text_field :name, class: 'name form-control', :autocomplete => true, required: true
+        .form-group.row
+          .col-md-6
+            = f.label :type, 'Event Type'
+            sup.text-danger *
+            =select_tag 'event[event_type_id]', options_for_select(EventType.all.collect { |u| [u.name, u.id] }, selected_key = @event.event_type_id), {:class => 'form-control pointer selectpicker', required: true ,:include_blank=>'Nothing Selected'}
+            .help-block.with-errors
+          .col-md-6
+            = f.label :brand, 'Brand Name'
+            sup.text-danger *
+            =select_tag 'event[brand_id]', options_for_select(@current_client.brands.active_brands.collect { |u| [u.name, u.id] }, selected_key = @event.brand_id), {:class => 'form-control pointer selectpicker', required: true,:include_blank=>'Nothing Selected'}
+        .form-group.row
+          .col-md-3
+            = f.label :max_users, 'Promo Staff Needed'
+            sup.text-danger *
+            -if @event.max_users==0
+              -value=1
+            -else
+              -value=@event.max_users
+            = f.number_field :max_users, min: 1, class: 'form-control', required: true, :value => value
+          .col-md-6
+            = f.label :promo_reps, 'Direct Sourced'
+            sup.text-danger
+            -selected=@event.user_events.where(:category => 0).collect { |c| c[:user_id] }
+            =f.select :user_ids, options_for_select(@promo_reps.collect { |u| [u.full_name, u.id] }, selected_key = selected), {}, {:multiple => true, :class => 'form-control selectpicker show-tick', 'data-live-search' => true}
+            .help-block.with-errors
+          .col-md-3
+            = f.label :promo_groups, 'Promo Groups'
+            sup.text-danger
+            =f.select :group_id, options_for_select(@current_client.groups.collect { |u| [u.name, u.id] }, selected_key = @event.group_id), {}, {:class => 'form-control selectpicker show-tick pointer', :title => 'Select Group'}
+            .help-block.with-errors
+
+        .form-group.row
+          .col-sm-6
+            =f.label :start_time, 'Start Time'
+            sup.text-danger *
+            #start_time.input-group.date
+              =f.text_field :start_time, class: 'form-control', required: true, value: ((@event.start_time)&.in_time_zone(@event.address&.time_zone))&.strftime('%m/%d/%Y %I:%M %p')
+              span.input-group-addon.pointer
+                i.icmn-calendar4
+          .col-sm-6
+            =f.label :end_time, 'End Time'
+            sup.text-danger *
+            #end_time.input-group.date
+              =f.text_field :end_time, class: 'form-control', required: true, value: ((@event&.end_time)&.in_time_zone(@event.address&.time_zone))&.strftime('%m/%d/%Y %I:%M %p')
+              span.input-group-addon.pointer
+                i.icmn-calendar4
+        .form-group.row
+          .col-sm-12
+            =f.label :area, 'Area'
+            sup.text-danger *
+            = f.text_field :area, class: 'form-control', required: true
+
+        = f.fields_for :address do |addr|
+          .form-group.row
+            .col-md-12
+              = f.label :city, 'Event Venue Address'
+              sup.text-danger *
+              .input-group
+                = addr.text_field :city, class: 'city form-control ', :autocomplete => true, placeholder: "Please enter correct zip code or address", required: true
+                span.input-group-addon.btn-primary.pointer
+                  i.fa.fa-map-marker
+                =addr.hidden_field :state, class: 'state'
+                =addr.hidden_field :country, class: 'country'
+                =addr.hidden_field :zip, class: 'zip'
+                =addr.hidden_field :formatted_address, class: 'formatted_address'
+                =addr.hidden_field :latitude, class: 'latitude'
+                =addr.hidden_field :longitude, class: 'longitude'
+        .form-group.row
+          .col-sm-12
+            =f.label :notes, 'Notes'
+            = f.text_area :notes, class: 'form-control', rows: 5
+      .panel-footer
+        .form-group.row
+          .col-md-9.col-md-offset-5
+            =f.submit 'Submit', class: 'button btn width-150 btn-primary'
+            '
+            a.button.btn.btn-default href="#{admin_events_path}" Cancel
+.padding-bottom-25

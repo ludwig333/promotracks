@@ -1,0 +1,98 @@
+section.page-content
+  .page-content-inner
+    .col-md-offset-1.col-md-10
+      = form_for [:admin, @event, @user_event] do |f|
+        section.panel
+          .panel-heading
+            h3 #{@user_event.new_record? ? 'New ' : 'Edit '}
+          .panel-body
+            .form-group.row
+              .col-md-3
+                label &nbsp;
+                .input-group
+                  .input-group-addon
+                    -if @user_event.recap.nil? or @user_event.recap==true
+                      -checked= true
+                    -elsif @user_event.recap==false
+                      -checked= false
+                    = f.check_box :recap, {:checked => checked}
+                  .form-control Recap
+            .form-group.row
+              .col-md-12
+                = f.label :total_expense, 'Total Expense for event'
+                sup.text-danger
+                = f.text_field :total_expense, class: 'form-control'
+
+            #recap_off
+              .form-group.row
+                .col-md-12
+                  = f.label :sample, 'Number Sampled'
+                  sup.text-danger
+                  = f.text_field :sample, class: 'form-control'
+              .form-group.row
+                .col-md-6
+                  = f.label :attendance, 'Total Attendance'
+                  sup.text-danger
+                  = f.text_field :attendance, class: 'form-control '
+                .col-md-6
+                  label &nbsp;
+                  .input-group
+                    .input-group-addon
+                      - if @user_event.recommended.nil? or @user_event.recommended==true
+                        - checked= true
+                      - elsif @user_event.recommended==false
+                        - checked= false
+                      = f.check_box :recommended, {:checked => checked}
+                    .form-control Recommended
+              .form-group.row
+                .col-md-12
+                  = f.label :follow_up, 'Bar/Store Owner Meetup for Followup'
+                  sup.text-danger
+                  = f.text_field :follow_up, class: 'form-control'
+              .form-group.row
+                .col-md-12
+                  = f.label :notes, 'Notes'
+                  sup.text-danger
+                  = f.text_area :notes, class: 'form-control', rows: 5
+            .form-group.row
+              .col-sm-6
+                =f.label :check_in, 'Check In time'
+                sup.text-danger
+                #check_in_time.input-group.date
+                  =f.text_field :check_in, class: 'form-control', value: (@user_event&.check_in&.strftime('%m/%d/%Y %I:%M %p'))
+                  span.input-group-addon.pointer
+                    i.icmn-calendar4
+              .col-sm-6
+                =f.label :check_out, 'Check Out time'
+                sup.text-danger
+                #check_out_time.input-group.date
+                  =f.text_field :check_out, class: 'form-control', value: (@user_event&.check_out&.strftime('%m/%d/%Y %I:%M %p'))
+                  span.input-group-addon.pointer
+                    i.icmn-calendar4
+            #image_off
+              .form-group.row
+                .col-md-1.pull-right.padding-top-20
+                  = label_tag '', ''
+                  a.btn.btn-default.add_images href='javascript:void(0)'
+                    i.fa.fa-plus
+                .col-md-11
+                  = f.label :images, 'Images'
+                  sup.text-danger
+                    = f.file_field :images, :class => 'form-control file', :multiple => true
+              .controls.attach
+
+              .row
+                .col-lg-12
+                  br
+                  .margin-bottom-50
+                    #owl3.owl-carousel.owl-theme.owl-demo-img
+                      - @user_event&.images.each_with_index do |img, index|
+                        div class="image_#{index}"
+                          span class="fa fa-times remove_image" data-event=@event.id data-uv="#{@user_event.id}" data-item="#{index}" aria-hidden="true"
+                            img src=image_path(img) class='fa fa-times'
+          .panel-footer
+            .form-group.row
+              .col-md-9.col-md-offset-3
+                =f.submit 'Submit', class: 'button btn width-150 btn-primary'
+                '
+                a.button.btn.btn-default href="#{admin_event_path(@event)}" Cancel

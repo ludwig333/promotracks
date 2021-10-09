@@ -1,0 +1,241 @@
+-object= current_user.super_admin? ? :superadmin : :admin
+-required=@client.new_record? ? true : false
+-disabled=@client.new_record? ? false : true
+section.page-content.height-auto
+  .page-content-inner
+    .panel
+      #breadcrumb-align
+        ul.list-unstyled.breadcrumb
+          -if object==:superadmin
+            li
+              a href='#{superadmin_clients_path}'   Clients
+          li
+            span #{@client.new_record? ? 'New ' : 'Edit '} Client
+    /! Forms Wizard
+    section.panel
+      .panel-heading
+        h3 #{@client.new_record? ? 'New ' : 'Edit '} Client
+      .panel-body
+        = form_for [object, @client], :html => {class: 'cui-wizard-style cui-wizard', :multipart => true, id: 'client_wizard', data: {toggle: 'validator'}} do |f|
+          h3
+            i.icmn-home.cui-wizard--steps--icon
+            span.cui-wizard--steps--title Client
+          section.text-center data-step="0"
+            .row
+              .col-sm-12
+                .row
+                  .col-md-3.col-lg-offset-2
+                    label.form-control-label for="l0"
+                      | Name
+                      sup.text-danger *
+                  .col-md-4
+                    .form-group
+                      = f.text_field :name, class: 'name form-control', required: true
+                      .help-block.with-errors
+                .row
+                  .col-md-3.col-lg-offset-2
+                    label.form-control-label for="l0"
+                      | Phone
+                      sup.text-danger
+                  .col-md-4
+                    .form-group
+                      = f.text_field :phone, class: 'form-control', id: 'us-phone-mask-input'
+                      .help-block.with-errors
+                .row
+                  .col-md-3.col-lg-offset-2
+                    label.form-control-label for="l0"
+                      | Payment/hr
+                      sup.text-danger *
+                  .col-md-4
+                    .form-group
+                      .input-group
+                        span.input-group-addon
+                          i.fa.fa-dollar
+                        = f.number_field :payment, :step => :any, min: 1, class: 'form-control', required: true
+          h3
+            i.icmn-user.cui-wizard--steps--icon
+            span.cui-wizard--steps--title Admin
+          section.text-center data-step="1"
+            .row
+              .col-sm-12
+                .margin-bottom-50
+                  = f.fields_for :admin, @admin do |user|
+                    =user.hidden_field :role, :value => 'client_admin'
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | First Name
+                          sup.text-danger *
+                      .col-md-9
+                        .form-group
+                          = user.text_field :first_name, class: 'form-control required', required: true
+                          .help-block.with-errors
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | Last Name
+                          sup.text-danger *
+                      .col-md-9
+                        .form-group
+                          = user.text_field :last_name, class: 'form-control required', required: true
+                          .help-block.with-errors
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | Email
+                          sup.text-danger *
+                      .col-md-9
+                        .form-group
+                          = user.email_field :email, class: 'form-control required', required: required, disabled: disabled
+                          .help-block.with-errors
+
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | Image
+                          sup.text-danger
+                      .col-md-9
+                        .form-group
+                          = user.file_field :image, class: 'file'
+                          .help-block.with-errors
+                          =link_to @admin.image.url&.split('/').last, @admin.image&.url, :target => '_new', :download => '' unless @admin.image.blank?
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | Password
+                          sup.text-danger *
+                      .col-md-9
+                        .form-group
+                          = user.password_field :password, class: 'form-control required', required: required
+                          .help-block.with-errors
+                    .row
+                      .col-md-3
+                        label.form-control-label for="l0"
+                          | Password  Confirmation
+                      .col-md-9
+                        .form-group
+                          = user.password_field :password_confirmation, class: 'form-control required', required: required
+                          .help-block.with-errors
+          h3
+            i.icmn-briefcase3.cui-wizard--steps--icon
+            span.cui-wizard--steps--title Brand
+          section.text-center data-step="2"
+            .row
+              .col-sm-12.col-md-offset-1
+                .margin-bottom-50
+                  .row
+                    .col-md-2
+                      .form-group
+                        a.form-control.add_new_brand class="btn btn-primary"href='javascript:void(0)' Add More
+                  .scroll_over
+                    = f.fields_for :brands, @brands do |brand|
+                      .row.brand_row
+                        .col-md-6
+                          .form-group
+                            =brand.hidden_field :id
+                            =brand.text_field :name, class: 'form-control', required: 'true'
+                            .help-block.with-errors
+                        .col-md-4
+                          .form-group
+                            .form-input-icon
+                              i.fa.fa-dollar.font-green
+                              =brand.text_field :unit_cost, class: 'form-control', required: 'true'
+                              .help-block.with-errors
+                        .col-md-1
+                          .form-group
+                            -if @brands.nil?
+                              -brand_id=''
+                            -else
+                              -brand_id = @brands[brand.options[:child_index]]&.id
+                            a.form-control.btn.btn-danger.remove_brand data-id=brand_id data-client=@client&.id href='javascript:void(0)'
+                              i.fa.fa-trash
+                    .brands
+.flash_message
+.padding-bottom-40
+
+
+javascript:
+  $(document).on('turbolinks:load', function () {
+    var form = $("#client_wizard");
+    form.validator();
+    $("form#client_wizard").steps({
+      headerTag: "h3",
+      bodyTag: "section",
+      transitionEffect: "slideLeft",
+      autoFocus: true,
+      onStepChanging: function (event, currentIndex, newIndex) {
+        $(this).validator('validate');
+        $container = $('#client_wizard').find('section[data-step="' + currentIndex + '"]');
+        var hasErrors = $container.validator('validate').has('.has-error').length;
+
+        if (hasErrors) {
+          return false;
+        } else {
+          return form.validator('update');
+        }
+      },
+      onFinishing: function (event, currentIndex) {
+
+        var check = 0;
+        $("form#hotel_wizard :input.required").each(function () {
+          var input_field = $(this);
+
+          if ($(input_field).val().length < 1) {
+            $(input_field).next().html('<ul><li>This is required field.</li></ul>');
+            check++;
+          }
+          else {
+            $(input_field).next().html('');
+            check--;
+          }
+
+        });
+        var hasErrors = $(this).validator('destroy').validator('validate').has('.has-error').length;
+        if (hasErrors || (check > 0 )) {
+          return false;
+        } else {
+          return form.validator('update');
+        }
+
+      },
+      onFinished: function (event, currentIndex) {
+        var form = $(this);
+        form.submit();
+      }
+
+    });
+
+
+    $('.add_new_brand').on("click", function (e) {
+      console.log($('.brand_row').size());
+      var ip_counter = $('.brand_row').size();
+      var new_brands = '<div class="row brand_row"><div class="col-md-6"><div class="form-group"><input class="form-control" required="required" name="client[brands_attributes][' + ip_counter + "][name]" + '" id="client_brands_attributes_' + ip_counter + "_name" + '" type="text"><div class="help-block with-errors"></div></div></div><div class="col-md-4"><div class="form-group"><div class="form-input-icon"><i class="fa fa-dollar font-green"></i><input class="form-control" required="required" value="0.0" name="client[brands_attributes][' + ip_counter + "][unit_cost]" + '" id="client_brands_attributes_' + ip_counter + "_unit_cost" + '" type="text"><div class="help-block with-errors"></div></div></div></div><div class="col-md-1"><div class="form-group"><a class="form-control btn btn-danger remove_brand" href="javascript:void(0)"><i class="fa fa-trash"></i></a></div></div></div>';
+      $(new_brands).insertBefore('.brands');
+    });
+
+    $("body").delegate('.remove_brand', 'click', function () {
+      var row = $(this);
+      var id = $(this).data("id");
+      var client = $(this).data("client");
+      if (id) {
+        $.ajax({
+          method: "DELETE",
+          url: "/superadmin/clients/" + client + "/remove_brand?id=" + id,
+          dataType: 'json',
+          success: function (data) {
+            if (data.message) {
+              var success_div = '<div class="alert alert-danger fade in capitalize bottom-right"><button class="close" data-dismiss="alert" >x</button>' + data.message + '</div>';
+              jQuery(success_div).insertBefore(".flash_message");
+              jQuery(".alert").delay(3000).fadeOut('slow');
+            } else {
+              row.closest('div.brand_row').find("*").remove();
+            }
+
+          }
+        });
+      } else {
+        $(this).closest('div.brand_row').find("*").remove();
+      }
+
+    });
+  });

@@ -1,0 +1,30 @@
+nav.left-menu left-menu=""
+  .logo-container
+    a.logo href=superadmin_clients_path
+      img alt=("Promo Tracks") src=image_url("logo.png") /
+  .left-menu-inner.scroll-pane
+    ul.left-menu-list.left-menu-list-root.list-unstyled
+      /li.left-menu-list class="#{active_class(superadmin_promo_reps_path)}"
+      /  a.left-menu-link href=superadmin_promo_reps_path
+      /    i.left-menu-link-icon.icmn-users
+      /    | Direct Sourced
+      /li.left-menu-list class="#{active_class(superadmin_groups_path)}"
+      /  a.left-menu-link href=superadmin_groups_path
+      /    i.left-menu-link-icon.icmn-users4
+      /    | Promo Groups
+      li.left-menu-list class="#{active_class(superadmin_clients_path)}"
+        a.left-menu-link href=superadmin_clients_path
+          i.left-menu-link-icon.fa.fa-users
+          | Clients
+      li.left-menu-list class="#{active_class(superadmin_event_types_path)}"
+        a.left-menu-link href=superadmin_event_types_path
+          i.left-menu-link-icon.fa.fa-sitemap
+          | Event Types
+      li.left-menu-list class="#{active_class(superadmin_events_path)}"
+        a.left-menu-link href=superadmin_events_path
+          i.left-menu-link-icon.icmn-calendar
+          | Events
+      li.left-menu-list
+        a.left-menu-link href=destroy_user_session_path data= {:confirm => "Are you sure?", :method => :delete} title= 'Logout'
+          i.left-menu-link-icon.icmn-exit
+          | Logout

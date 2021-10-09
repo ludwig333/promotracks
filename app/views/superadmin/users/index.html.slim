@@ -1,0 +1,34 @@
+.col-md-offset-1.col-md-10
+  .panel
+    .container#breadcrumb-align
+      ul.list-unstyled.breadcrumb
+        li
+          a href='#{superadmin_clients_path}'   Clients
+        li
+          span Admins
+  .panel
+    .panel-heading
+      .pull-right
+        =link_to "Invite Admin", new_superadmin_client_user_path, class: 'btn btn-info btn-sm'
+      h4 Admins
+    .panel-body
+      table.table.table-striped
+        thead
+          tr
+            th.col-md-2 ID
+            th.col-md-3 Name
+            th.col-md-5 Email
+            th.col-md-2.text-center Action
+        tbody
+          -@users.each do |user|
+            tr
+              td.col-md-2 #{user.id}
+              td.col-md-3 #{user.full_name}
+              td.col-md-5 #{user.email}
+              td.col-md-2.text-center
+                -unless @client.admin == user
+                  = link_to superadmin_client_user_resend_invitation_path(@client.id,user.id), class: 'btn-sm  btn-icon btn btn-rounded btn-primary' ,:data => {:toggle => 'tooltip', :placement => 'top'}, :title => "resend invitation" do
+                    i.icmn-envelop5
+                '
+                = link_to superadmin_client_user_path(@client.id,user.id), :data => {:confirm => 'Are you sure, you want to delete?'}, :title => 'Delete', :method => :delete, class: 'btn btn-sm btn-danger' do
+                  i.glyphicon.glyphicon-trash

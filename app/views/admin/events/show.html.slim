@@ -1,0 +1,105 @@
+section.page-content
+  #load_images
+  .page-content-inner
+    /! Pricing Tables
+    .panel
+      .panel-heading
+        h3 #{@event.name}
+      .panel-body
+        .margin-bottom-50
+          .invoice-block
+            h4 #{@event.event_type&.name}
+            .row
+              .col-md-6
+                address
+                  | Timings:       #{((@event.start_time).in_time_zone(@event.address.time_zone))&.strftime('%m/%d/%Y %I:%M %p')} - #{((@event.end_time).in_time_zone(@event.address.time_zone))&.strftime('%m/%d/%Y %I:%M %p')}
+                -if @event.address&.formatted_address.blank?
+                  -address = @event.address&.city
+                -else
+                  -address = @event.address&.formatted_address
+                address
+                  | Venue:         #{address}
+                address
+                  | Payment/hr :      #{(get_amount(@event))}
+
+                  br/
+                  br/
+              .col-md-6.text-right
+                address
+                  |  Brand :    #{@event.brand&.name}
+                address
+                  | Unit cost: $ #{@event.brand&.unit_cost}
+
+            .table-responsive
+              table.table.table-hover.text-right
+                thead
+                  tr
+                    th Id
+                    th Rep
+                    th Attendance
+                    th Sample
+                    th Product Cost
+                    th Expenses
+                    th Hours
+                    th Pay
+                    th Recommended
+                    th Check In
+                    th Check out
+                    th Images
+                    th.text-center Actions
+
+                tbody
+                  -@event.user_events.where(:status => UserEvent::statuses[:accepted]).each_with_index do |uv, index|
+
+                    tr
+                      td.text-left #{uv.user.id}
+                      td.text-left #{uv.user.full_name}
+                      -if uv.recap==true
+                        td.text-left #{uv.attendance}
+                      -else
+                        td.text-left
+                      -if uv.recap==true
+                        td.text-left #{uv.sample}
+                      -else
+                        td.text-left
+                      -if uv.recap==true
+                        td.text-left #{number_with_precision((@event.brand&.unit_cost||0)*((uv&.sample)||0).round, precision: 1,  strip_insignificant_zeros: true)}
+                      -else
+                        td.text-left
+                      td.text-left #{uv.total_expense}
+                      -if !uv.check_in.nil? and !uv.check_out.nil?
+                        -hour=time_diff(uv.check_out, uv.check_in)
+                        td.text-left #{hour}
+                        td.text-left #{hour*(get_amount(@event))}
+                      -else
+                        td.text-left
+                        td.text-left
+                      td.text-left
+                        -if uv.recommended==true
+                          p.highlight Yes
+                        -elsif uv.recommended==false
+                          p.highlight No
+                      td.text-left #{uv.check_in&.strftime('%m/%d/%Y %I:%M %p')}
+
+                      td.text-left #{uv.check_out&.strftime('%m/%d/%Y %I:%M %p')}
+
+                      td.text-left
+                        -if uv.images&.size==0
+
+                          p N/A
+                        -else
+                          a class="images" href= images_admin_dashboard_index_path(:user_event=> uv.id)  Show
+                      td.text-center
+                        = link_to edit_admin_event_user_event_path(:event_id => @event.id, :id => uv.id), class: 'btn-sm  btn-icon btn btn-rounded btn-warning' do
+                          i.icmn-pencil4
+        .row
+          .col-md-12
+            small
+              /.text-inline.text-danger *
+              .text-inline Times are in the respective location's timezone
+        .row
+          .col-md-12
+            small
+              /.text-inline.text-danger #
+              .text-inline Times are in #{Time.zone.to_s} Timezone
+.padding-15

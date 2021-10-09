@@ -1,0 +1,27 @@
+section.panel
+  .panel-heading
+    h3
+      | Images
+
+    =link_to 'Back', :back, :class => 'pull-right btn btn-default'
+  .panel-body
+    br
+    .row
+      - @user_event&.images.each do |img|
+        .col-md-4
+          a.pop href="javascript:void;"
+            img src=image_path(img) style=("width: 400px; height: 264px;") /
+            h5 &nbsp;
+#imagemodal.modal.fade aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-body
+        button.close data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+          span.sr-only Close
+        img.imagepreview src="" style=("width: 100%;") /
+
+
+
+
+

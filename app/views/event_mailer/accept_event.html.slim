@@ -1,0 +1,113 @@
+doctype html
+html
+  head
+    title
+    link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" /
+    css:
+      | body {
+      | font-family : 'Lato', sans-serif;
+      |
+      }
+  body
+    div style=("background: #eceff4; padding: 50px 20px; color: #514d6a;") width="100%"
+      div style=("max-width: 700px; margin: 0px auto; font-size: 14px")
+        table border="0" cellpadding="0" cellspacing="0" style=("width: 100%; margin-bottom: 20px")
+          tbody
+            tr
+              td style=("vertical-align: top;")
+                a href="#{root_url}" target="_blank"
+                  img border="0" src="https://s3-us-west-2.amazonaws.com/promotracks-stage-asset/logo.png"
+
+        div style=("padding: 40px 40px 20px 40px; background: #fff;")
+          table border="0" cellpadding="0" cellspacing="0" style=("width: 100%;")
+            tbody
+              tr
+                td
+                  -if @data[:type] == 'promo_group'
+                    div style=("padding: 15px 30px; background: #46be8a; border-radius: 5px; margin-bottom: 20px; color: #fff; text-align: center")
+                      | Congratulations! You have been invited.
+                  -else
+                    div style=("padding: 15px 30px; background: #46be8a; border-radius: 5px; margin-bottom: 20px; color: #fff; text-align: center")
+                      | Congratulations! You have been assigned for an event.
+                  h5 style=("margin-bottom: 20px; color: #24222f; font-size: 1.25rem ; font-weight: 600")  Hello #{@data[:event][:user]},
+                  -if @data[:type] == 'promo_group'
+                    p
+                      | You have been invited for
+                      strong
+                        |&nbsp; #{@data[:event][:name]}
+                      |&nbsp; for the brand of
+                      strong
+                        |&nbsp; #{@data[:event][:brand_name]}
+                      |&nbsp; from
+                      strong
+                        |&nbsp; #{@data[:event][:start_time]}
+                      |&nbsp; to
+                      strong
+                        |&nbsp; #{@data[:event][:end_time]}
+                      |&nbsp; at
+                      strong
+                        |&nbsp; #{@data[:event][:location]}.
+                  -else
+                    p
+                      |&nbsp; You have been assigned for
+                      strong
+                        |&nbsp; #{@data[:event][:name]}
+                      |&nbsp; for the brand of
+                      strong
+                        |&nbsp; #{@data[:event][:brand_name]}
+                      |&nbsp; from
+                      strong
+                        |&nbsp; #{@data[:event][:start_time]}
+                      |&nbsp; to
+                      strong
+                        |&nbsp; #{@data[:event][:end_time]}
+                      |&nbsp; at
+                      strong
+                        |&nbsp; #{@data[:event][:location]}.
+                  /div
+                  /  p Name: #{@data[:event][:name]}
+                  /  p Timings: #{@data[:event][:start_time]&.strftime('%m/%d/%Y %I:%M %p')}  to  #{@data[:event][:end_time]&.strftime('%m/%d/%Y %I:%M %p')}
+                  /  p Brand : #{@data[:event][:brand_name]}
+                  /  p Location : #{@data[:event][:location]}
+                  - unless @data[:event][:notes].blank?
+                    p
+                      strong
+                        | Notes:
+                      |&nbsp; #{@data[:event][:notes]}
+                  - if @data[:type] == 'promo_group'
+                    p
+                      strong
+                        | Invited By:
+                      |&nbsp; #{@data[:event][:client_name]}
+                    p
+                      strong
+                        | Contact:
+                      |&nbsp; #{@data[:event][:client_phone]}
+                  - else
+                    p
+                      strong
+                        | Assigned By:
+                      |&nbsp; #{@data[:event][:client_name]}
+                    p
+                      strong
+                        | Contact:
+                      |&nbsp; #{@data[:event][:client_phone]}
+                  br
+                  /br
+                  -if @data[:type] == 'promo_group'
+                    br
+                    div style=("text-align: center")
+                      a href=event_url(@data[:event][:id],token: @data[:token],status: "accept") style= 'font-weight:bold; font-size: medium; background: #46be8a; color: #fff; text-decoration: none; padding: 8px 15PX; border-radius: 5px' Accept
+                      '
+                      a href=event_url(@data[:event][:id], token: @data[:token], status: "decline") style= 'font-weight:bold; font-size: medium; background: #fb434a; color: #fff; text-decoration: none; padding: 8px 15PX; border-radius: 5px' Decline
+                    br
+                  /br
+                  p
+                    | Regards,
+                    br
+                    span style="color:#d43f3a;"  Promo Tracks
+        div style=("text-align: center; font-size: 12px; color: #a09bb9; margin-top: 20px")
+          p
+            | &copy; 2017 PromoTracks,
+            br
+            | All rights reserved.

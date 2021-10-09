@@ -1,0 +1,14 @@
+//= require jquery
+//= require jquery.turbolinks
+//= require jquery_ujs
+//= require dataTables/jquery.dataTables
+//= require jquery-ui
+//= require moment
+//= require turbolinks
+//= require custom
+//= require autocomplete
+//= require select2
+//= require plugins
+//= require js.cookie
+//= require jstz
+//= require browser_timezone_rails/set_time_zone

@@ -1,0 +1,27 @@
+.col-md-offset-2.col-md-7
+  .panel
+    .panel-heading
+      .pull-right
+        = link_to new_superadmin_event_type_path, class: "btn btn-info btn-sm" do
+          i.left-menu-link-icon.icmn-plus
+          |&nbsp;&nbsp;Event Type
+      h4 Event Types
+    .panel-body
+      table.table.table-striped
+        thead
+          tr
+            th ID
+            th Name
+            th.text-center Actions
+
+        tbody
+          -@event_types.each do |event_type|
+            tr
+              td #{event_type.id}
+              td #{event_type.name}
+              td.text-center
+                = link_to edit_superadmin_event_type_path(event_type), class: 'btn-sm  btn-icon btn btn-rounded btn-warning' do
+                  i.icmn-pencil4
+.pull-right
+  -if @event_types.count>0
+    = paginate @event_types

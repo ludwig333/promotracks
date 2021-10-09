@@ -1,0 +1,284 @@
+.ui-autocomplete {
+  margin: 0px;
+  padding: 0;
+  float: left;
+  background-color: #eeeeee;;
+  border: solid 1px #cccccc;
+  z-index: 2;
+}
+
+.ui-autocomplete li {
+  list-style-type: none;
+  padding: 10px 8px;
+  border-bottom: solid 1px #cccccc;
+  background: #ffffff;
+  color: #212635;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background: #2B85C6;
+  }
+  &:last-child {
+    border: none;
+  }
+}
+
+#login-screen {
+  background-image: image-url("login.jpeg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+nav.csm-menu.top-menu {
+  border: none;
+}
+
+@media (min-width: 768px) {
+  body.menu-top nav.csm-menu.top-menu {
+    height: 79px !important;
+  }
+}
+
+.select2-container {
+  width: 80px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.cwt__footer.visible-footer.copyrights {
+  display: block;
+  clear: both;
+  position: relative;
+  height: 4rem;
+  margin-top: -3em;
+  background-color: #d43f3a;
+  color: white;
+  padding: 1.5rem;
+}
+
+#text-color {
+  color: #d43f3a;
+}
+
+.checkbox_align {
+  left: -0.5rem;
+}
+
+#align {
+  bottom: 140px;
+}
+
+#align1 {
+  bottom: 80px;
+}
+
+#user-logo {
+  padding-top: 10px;
+}
+
+#breadcrumb-align {
+  margin-bottom: -12px;
+}
+
+#left {
+  right: inherit;
+}
+
+.radio-button {
+  vertical-align: initial;
+}
+
+.pagination a, .pagination span.current, .pagination span.gap {
+  float: left;
+  padding: 0 14px;
+  line-height: 38px;
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid #DDD;
+  border-left-width: 0;
+}
+
+.pagination {
+  border-left: 1px solid #ddd;
+
+  .first {
+    padding: 0;
+    float: none;
+    border: none;
+  }
+
+  .prev {
+    padding: 0;
+    float: none;
+    border: none;
+  }
+
+  .page {
+    padding: 0;
+    float: none;
+    border: none;
+  }
+
+  .next {
+    padding: 0;
+    float: none;
+    border: none;
+  }
+
+  .last {
+    padding: 0;
+    float: none;
+    border: none;
+  }
+
+}
+
+.field {
+  font-family: arial, sans-serif;
+  border-color: #d9d9d9;
+  border-top: solid 1px #c0c0c0;
+}
+
+input.field {
+  width: 100%;
+}
+
+.fieldwrapper {
+  white-space: nowrap;
+}
+
+.cui-wizard-style > .content {
+  height: 600px;
+}
+.cui-wizard > .content {
+ height: 400px;
+ background: transparent;
+}
+
+.has-error .form-control {
+  border-color: $color-red-error !important;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.help-block.with-errors ul li {
+  color: $color-red-error;
+  list-style: none;
+}
+
+.step {
+  display: block;
+}
+
+.filter {
+  padding-top: 10px;
+}
+
+/*owl-nav*/
+.owl-prev {
+  position: absolute;
+  top: 40%;
+  left: 0;
+}
+
+.owl-next {
+  position: absolute;
+  top: 40%;
+  right: 0;
+}
+
+.fa {
+  font-size: 80px;
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .owl-nav {
+    display: none;
+  }
+}
+
+/*owl-dots*/
+.owl-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  margin-left: -27px;
+}
+
+.owl-dot {
+  background: #fff;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
+  text-indent: -999em;
+  border-radius: 6px;
+  cursor: pointer;
+  -webkit-transition: background .5s, opacity .5s;
+  -moz-transition: background .5s, opacity .5s;
+  transition: background .5s, opacity .5s;
+}
+
+.owl-dot.active {
+  background: #333;
+}
+
+.scroll_over {
+  overflow-y: auto;
+  height: 400px;
+  width: 800px;
+}
+
+@media (min-width: 768px) {
+  #top-menu1 {
+    margin-left: 450px;
+  }
+}
+
+@media (min-width: 1200px) {
+  #top-menu1 {
+    margin-left: 850px;
+  }
+}
+
+@media (min-width: 992px) {
+  #top-menu1 {
+    margin-left: 500px;
+  }
+}
+
+.highlight {
+  font-weight: bold;
+}
+.scrollit {
+  overflow:scroll;
+  height:500px;
+}
+
+.bootstrap-select.btn-group .dropdown-menu li a {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding-bottom: 13px;
+}
+
+tbody, thead tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead {
+  display: block;
+  position: sticky;
+  top: 0;
+}
+
+.tab-width {
+  width: 8%;
+}
